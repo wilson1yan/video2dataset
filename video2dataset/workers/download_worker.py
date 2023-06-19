@@ -1,5 +1,6 @@
 """the downloader module handles the downloading"""
 
+from tqdm import tqdm
 import math
 import time
 import pyarrow as pa
@@ -164,10 +165,10 @@ class DownloadWorker:
         oom_sample_per_shard = math.ceil(math.log10(self.config["storage"]["number_sample_per_shard"]))
 
         with ThreadPool(self.config["distribution"]["thread_count"]) as thread_pool:
-            for key, streams, yt_meta_dict, error_message in thread_pool.imap_unordered(
+            for key, streams, yt_meta_dict, error_message in tqdm(thread_pool.imap_unordered(
                 self.data_reader,  # pylint: disable=(unnecessary-lambda)
                 loader,
-            ):
+            ), total=len(key_url_list), disable=True):
                 try:
                     _, sample_data = shard_to_dl[key]
                     str_key = compute_key(
@@ -225,7 +226,7 @@ class DownloadWorker:
                     )
                     subsampled_streams, metas, error_message = broadcast_subsampler(streams, meta)
 
-                    for modality in subsampled_streams:
+                    for modality in ["video"]:#subsampled_streams:
                         for modality_subsampler in self.subsamplers[modality]:
                             subsampled_streams, metas, error_message = modality_subsampler(subsampled_streams, metas)
 

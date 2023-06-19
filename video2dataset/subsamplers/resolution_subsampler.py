@@ -33,8 +33,9 @@ class ResolutionSubsampler(Subsampler):
                     f.write(vid_bytes)
                 try:
                     _ = ffmpeg.input(f"{tmpdir}/input.mp4")
+                    _ = _.filter("fps", fps=15, round="up")
                     if "scale" in self.resize_mode:
-                        _ = _.filter("scale", -2, self.video_size)
+                        _ = _.filter("scale", w=self.video_size, h=self.video_size, force_original_aspect_ratio="increase")
                     if "crop" in self.resize_mode:
                         _ = _.filter("crop", w=self.video_size, h=self.video_size)
                     if "pad" in self.resize_mode:
@@ -46,4 +47,4 @@ class ResolutionSubsampler(Subsampler):
                 with open(f"{tmpdir}/output.mp4", "rb") as f:
                     subsampled_bytes.append(f.read())
         streams["video"] = subsampled_bytes
-        return streams, None, None
+        return streams, metadata, None

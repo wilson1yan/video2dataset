@@ -116,7 +116,12 @@ class InputSharder:
             if start_shard_id + shard_id not in self.done_shards
         ]
 
-        shards_to_write = self.shard_sampler(shards_to_write)
+        idx = 0
+        print("IDX:", idx)
+        if idx == 0:
+            shards_to_write = self.shard_sampler(shards_to_write)[:len(shards_to_write) // 2]
+        else:
+            shards_to_write = self.shard_sampler(shards_to_write)[len(shards_to_write) // 2:]
         number_shards = len(shards_to_write)
 
         if len(shards_to_write) == 0:

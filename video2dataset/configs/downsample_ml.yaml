@@ -1,27 +1,8 @@
 subsampling:
     ResolutionSubsampler:
         args:
-            video_size: 224
-            resize_mode: "scale,crop,pad"
-    FrameSubsampler:
-        args:
-           frame_rate: 5
-    CutDetectionSubsampler:
-        cuts_are_clips: True
-        args:
-            cut_detection_mode: "all"
-            framerates: null
-            threshold: 11.5
-            min_scene_len: 15
-    ClippingSubsampler:
-        args:
-            min_length: 4.0
-            max_length: 10.0
-            max_length_strategy: "all"
-            precision: "keyframe_adjusted"
-    FFProbeSubsampler:
-        args:
-            extract_keyframes: False
+            video_size: 256
+            resize_mode: "scale,crop"
 
 reading:
     yt_args:
