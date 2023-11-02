@@ -1,8 +1,8 @@
 subsampling:
     ResolutionSubsampler:
         args:
-            video_size: 256
-            resize_mode: "scale,crop"
+            video_size: 224
+            resize_mode: "scale"
 
 reading:
     yt_args:
@@ -17,7 +17,7 @@ reading:
     sampler: null
 
 storage:
-    number_sample_per_shard: 1000
+    number_sample_per_shard: 100
     oom_shard_count: 5
     captions_are_subtitles: False
 
